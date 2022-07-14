@@ -28,6 +28,7 @@ namespace EmployeeCRUDApp.Models
 
         public string MOBILENUMBER { get; set; }
 
+        [Required]
         [DataType(DataType.EmailAddress)]
         public string EMAIL { get; set; }
 

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading.Tasks; 
 
 namespace EmployeeCRUDApp.Controllers
 {
@@ -13,10 +13,13 @@ namespace EmployeeCRUDApp.Controllers
     {
         //injection connection string which is specificated in EmployeeContext
         private readonly EmployeeContext _context;
+        EmployeeStoredProcedures emp = new EmployeeStoredProcedures();
+        
+
 
         public EmployeeController(EmployeeContext context)
         {
-            _context = context;
+            _context = context; 
         }
          
         public async Task<IActionResult> ListOfEmployees()//Index
@@ -28,7 +31,7 @@ namespace EmployeeCRUDApp.Controllers
         public IActionResult CreateCreateEmployee()//Create
         {
             //this action result is just for show page with form, and we don't need to use async and don't need to connect to data base, just show a form with wanted model
-
+            //a simple View page which we create on base of our model 
             return View();
         }
 
@@ -38,10 +41,16 @@ namespace EmployeeCRUDApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.EMPLOYEES.Add(employee);//adres to the data base, select table name and Add a model 
-                await _context.SaveChangesAsync();//save changes
+                //_context.EMPLOYEES.Add(employee);//adres to the data base, select table name and Add a model 
+                //await _context.SaveChangesAsync();//save changes
                 //return RedirectToAction("ListOfEmployees") //also work good
-                return RedirectToAction(nameof(ListOfEmployees)); //redirect to action(page) namePage = nameAction
+                //return RedirectToAction(nameof(ListOfEmployees)); //redirect to action(page) namePage = nameAction
+
+                
+                var result_registration = await emp.Add_new_userAsync(employee);
+                ErrorList er = new ErrorList();
+                er.message_error = result_registration;
+                return RedirectToAction(nameof(Result_registration), er);
             }
             //if anythings will hapen will return a simple view
             return View(employee);
@@ -101,6 +110,12 @@ namespace EmployeeCRUDApp.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(ListOfEmployees));
+        }
+
+        //for show view with operation result status
+        public IActionResult Result_registration(ErrorList error)
+        {
+            return View(error);
         }
     }
 }

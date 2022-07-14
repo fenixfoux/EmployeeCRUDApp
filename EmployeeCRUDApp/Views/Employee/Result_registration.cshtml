@@ -1,0 +1,23 @@
+﻿@model EmployeeCRUDApp.Models.ErrorList
+
+@{
+    ViewData["Title"] = "Result_registration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+ 
+
+<div>
+    <h4>Operation result</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            Status : 
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.message_error)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="ListOfEmployees">Back to List</a>
+</div>

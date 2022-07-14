@@ -1,0 +1,66 @@
+﻿@model IEnumerable<EmployeeCRUDApp.Models.Employee>
+
+@{
+    ViewData["Title"] = "ListOfEmployees";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>ListOfEmployees</h1>
+
+<p>
+    <a asp-action="CreateCreateEmployee">Create New</a>
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr> 
+            <th>
+                @Html.DisplayNameFor(model => model.FIRSTNAME)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LASTNAME)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MOBILENUMBER)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EMAIL)
+            </th> 
+            <th>
+                @Html.DisplayNameFor(model => model.CITY)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.COUNTRY)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr> 
+            <td>
+                @Html.DisplayFor(modelItem => item.FIRSTNAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LASTNAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MOBILENUMBER)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EMAIL)
+            </td> 
+            <td>
+                @Html.DisplayFor(modelItem => item.CITY)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.COUNTRY)
+            </td>
+            <td>
+                @*uncomment /* id=item.PrimaryKey */ and after dot(.) indicate ID from model, it is a parametr which we will pass to our controller*@
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

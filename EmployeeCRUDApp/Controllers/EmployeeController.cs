@@ -23,7 +23,8 @@ namespace EmployeeCRUDApp.Controllers
         }
          
         public async Task<IActionResult> ListOfEmployees()//Index
-        {
+        {   
+            //be sure what all required fields in model need to have data when extract from db, if one of them will be null then the page will not load, will show error
             //create a var for list of employees and get from data base from tablename and Cast to list and then communicate in View this list
             var employees = await _context.EMPLOYEES.ToListAsync();
             return View(employees);

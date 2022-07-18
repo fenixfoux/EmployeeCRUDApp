@@ -1,0 +1,151 @@
+﻿@model EmployeeCRUDApp.Models.Supplier
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/lib/jquery/dist/jquery.js"></script>
+
+<h1>Suppliers list</h1>
+
+<p>
+    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#supplierModal">New Supplier</a>
+</p>
+
+
+<div class="modal fade" id="supplierModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Supplier information</h4>
+            </div>
+            <div class="modal-body">
+                <form id="supplierform">
+                    <label>Supplier Name</label>
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    <label>Supplier Mobile</label>
+                    @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control" })
+                    <label>Supplier Email</label>
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    <label>Supplier Address</label>
+                    @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="btn-group">
+                    <a href="#" id="btnSave" class="btn btn-primary mr-2">Save Supplier</a>
+                    <a href="#" id="btnCancel" class="btn btn-danger">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm</h4>
+            </div>
+            <div class="modal-body">
+                <h3>Are you sure you want to delete this supplier?</h3>
+            </div>
+            <div class="modal-footer">
+                <div class="btn-group">
+                    <a href="#" id="btnDelete" class="btn btn-primary mr-2">Delete</a>
+                    <a href="#" id="btnCancelDelete" class="btn btn-danger">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr class="btn-primary">
+            <th>
+                Supplier Name
+            </th>
+            <th>
+                Mobile
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Address
+            </th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.SUPPLIER)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Mobile
+                </td>
+                <td>
+                    @item.Email
+                </td>
+                <td>
+                    @item.Address
+                </td>
+                <td>
+                    <a href="#" id="showModal" class="btn btn-danger" onclick="Confirm(@item.Id)">Delete</a>
+                    @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@*create input for store ID of selected id for delete*@
+<input type="hidden" id="supplierId" />
+<script>
+    $(document).ready(function () {
+        $("#btnSave").click(function () {//when button with id btnSave is clicked then
+            var supplierFormData = $("#supplierform").serialize(); //store data from form with id supplierform and serialize data for transfer
+
+            $.ajax({ //and start ajax method with type POST
+                type: "POST",
+                url: "/Supplier/SaveSupplier", //and select action SaveSupplier from controller Supplier
+                data: supplierFormData, //set data
+                success: function () {//when succes then refres URL
+                    window.location.href = "/Supplier/Index"
+                }
+            })
+        })
+
+        $("#btnDelete").click(function () {
+            var _id = $("#supplierId").val();
+            $.ajax({
+                type: "POST",
+                url: "/Supplier/DeleteSupplier",
+                data: { id: _id },
+                success: function (result) {
+                    if (result) { //result from function DeleteSupplier from SupplierController
+                        $("#deleteModal").modal('hide'); //hide modal dialog
+                        $("#supplierId").val(null); //reset variable vhich store SupplierId
+                        window.location.href = "/Supplier/Index"; //refresh the page
+                    } else {
+                        alert("Something went wrong while processing your request");
+                    }
+                }
+            })
+        })
+
+        $("#btnCancel, #btnCancelDelete").click(function () { //if cancel just refres this page
+            window.location.href = "/Supplier/Index"
+        })
+
+    })
+    var Confirm = function (id) {
+        $("#supplierId").val(id);
+        $("#deleteModal").modal('show');
+    }
+</script>

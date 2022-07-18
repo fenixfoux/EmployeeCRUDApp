@@ -12,8 +12,9 @@ namespace EmployeeCRUDApp.Data
         public EmployeeContext(DbContextOptions<EmployeeContext> options) : base(options){ }
 
         //indicate  public DbSet<ModelClass> TanleNameInDataBase
-        //if need to add new set for work with another table we need to write like below and indicate which model will be use and with which tablename
+        //if need to add new set for work with another table we need to write like below and indicate which model will be use and with which tablename 
         public DbSet<Employee> EMPLOYEES { get; set; }
+        //public DbSet<Supplier> SUPPLIER { get; set; }
     }
 
 }

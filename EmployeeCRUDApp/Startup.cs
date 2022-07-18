@@ -29,6 +29,8 @@ namespace EmployeeCRUDApp
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<EmployeeContext>(options =>
                     options.UseOracle(connectionString));
+            services.AddDbContext<StoreContext>(options =>
+                    options.UseOracle(connectionString));
             services.AddControllersWithViews();
         }
 
